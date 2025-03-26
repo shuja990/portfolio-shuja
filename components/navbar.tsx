@@ -89,7 +89,7 @@ const Navbar = () => {
               )}
 
               <Button asChild className="rounded-full px-6">
-                <a href="https://drive.google.com/file/d/1SNRa6gxqhpc2OTQuxR0fJetefeHosCkE/view" target="_blank" rel="noopener noreferrer">
+                <a href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing" target="_blank" rel="noopener noreferrer">
                   Resume
                 </a>
               </Button>
