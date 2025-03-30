@@ -1,12 +1,13 @@
 "use client"
 
+import type React from "react"
+
 import { useEffect, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ArrowDown, Github, Linkedin, Mail, Code, Terminal } from "lucide-react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
-import Link from "next/link"
 
 // Dynamically import Three.js components with SSR disabled
 const ThreeBackground = dynamic(() => import("./three-background"), {
@@ -89,6 +90,21 @@ const Hero = () => {
     }
   }, [typedText, fullText, typingSpeed])
 
+  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault()
+    const section = document.getElementById(sectionId)
+    if (section) {
+      // Calculate header height for offset (adjust the value as needed)
+      const headerHeight = 80
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY - headerHeight
+
+      window.scrollTo({
+        top: sectionTop,
+        behavior: "smooth",
+      })
+    }
+  }
+
   const showThreeJs = threeJsSupported && !threeJsError
 
   return (
@@ -141,7 +157,7 @@ const Hero = () => {
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-orbitron font-bold mb-3 md:mb-4 animate-text-shimmer">
                 Hi, I'm <span className="text-primary">Shuja Ali</span>
               </h1>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-8 sm:mb-6 h-8 font-orbitron">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-6 h-8 font-orbitron">
                 {typedText}
                 <span className="animate-pulse">|</span>
               </h2>
@@ -157,16 +173,24 @@ const Hero = () => {
                   size="default"
                   className="btn-funky bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
-                  <Link href="#contact" className="flex items-center gap-2" scroll={false}>
+                  <a
+                    href="#contact"
+                    onClick={(e) => handleScrollToSection(e, "contact")}
+                    className="flex items-center gap-2"
+                  >
                     <Terminal className="h-4 w-4" aria-hidden="true" />
                     Get In Touch
-                  </Link>
+                  </a>
                 </Button>
                 <Button asChild variant="outline" size="default" className="btn-funky">
-                  <Link href="#projects" className="flex items-center gap-2" scroll={false}>
+                  <a
+                    href="#projects"
+                    onClick={(e) => handleScrollToSection(e, "projects")}
+                    className="flex items-center gap-2"
+                  >
                     <Code className="h-4 w-4" aria-hidden="true" />
                     View Projects
-                  </Link>
+                  </a>
                 </Button>
               </div>
 
@@ -240,17 +264,17 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Link
+            <a
               href="#about"
+              onClick={(e) => handleScrollToSection(e, "about")}
               className="flex flex-col items-center"
-              scroll={false}
               aria-label="Scroll to About section"
             >
               <span className="text-sm text-foreground/60 mb-2 animated-underline">Scroll Down</span>
               <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}>
                 <ArrowDown className="text-primary" size={20} aria-hidden="true" />
               </motion.div>
-            </Link>
+            </a>
           </motion.div>
         </div>
       </section>

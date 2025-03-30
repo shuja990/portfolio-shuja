@@ -1,7 +1,8 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Moon, Sun, Code, Terminal } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -35,13 +36,33 @@ const Navbar = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark")
   }
 
+  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault()
+    const section = document.getElementById(sectionId)
+    if (section) {
+      // Close mobile menu if open
+      if (isMenuOpen) {
+        setIsMenuOpen(false)
+      }
+
+      // Calculate header height for offset (adjust the value as needed)
+      const headerHeight = 80
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY - headerHeight
+
+      window.scrollTo({
+        top: sectionTop,
+        behavior: "smooth",
+      })
+    }
+  }
+
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "home" },
+    { name: "About", href: "about" },
+    { name: "Skills", href: "skills" },
+    { name: "Experience", href: "experience" },
+    { name: "Projects", href: "projects" },
+    { name: "Contact", href: "contact" },
   ]
 
   return (
@@ -53,7 +74,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="relative group">
+          <a href="#home" onClick={(e) => handleScrollToSection(e, "home")} className="relative group">
             <motion.span
               className="text-2xl font-bold gradient-text flex items-center font-orbitron"
               whileHover={{ scale: 1.05 }}
@@ -62,20 +83,20 @@ const Navbar = () => {
               Shuja Ali
             </motion.span>
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             {navLinks.map((link, index) => (
               <motion.div key={link.name} whileHover={{ scale: 1.1 }}>
-                <Link
-                  href={link.href}
+                <a
+                  href={`#${link.href}`}
+                  onClick={(e) => handleScrollToSection(e, link.href)}
                   className="relative px-4 py-2 text-foreground/80 hover:text-primary transition-colors group"
-                  scroll={false}
                 >
                   <span>{link.name}</span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
-                </Link>
+                </a>
               </motion.div>
             ))}
 
@@ -100,7 +121,7 @@ const Navbar = () => {
                 asChild
                 className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
               >
-                <a href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Terminal size={16} />
                   Resume
                 </a>
@@ -162,14 +183,13 @@ const Navbar = () => {
                     transition: { duration: 0.2 },
                   }}
                 >
-                  <Link
-                    href={link.href}
+                  <a
+                    href={`#${link.href}`}
+                    onClick={(e) => handleScrollToSection(e, link.href)}
                     className="block py-3 px-4 my-1 text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-primary/5"
-                    onClick={() => setIsMenuOpen(false)}
-                    scroll={false}
                   >
                     {link.name}
-                  </Link>
+                  </a>
                 </motion.div>
               ))}
               <motion.div
@@ -201,4 +221,5 @@ const Navbar = () => {
 }
 
 export default Navbar
+
 
