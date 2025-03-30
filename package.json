@@ -61,7 +61,8 @@
     "@emotion/is-prop-valid": "latest",
     "framer-motion": "latest",
     "react-intersection-observer": "latest",
-    "@emailjs/browser": "latest"
+    "@emailjs/browser": "latest",
+    "three": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Moon, Sun } from "lucide-react"
+import { Menu, X, Moon, Sun, Code, Terminal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 import { motion, AnimatePresence } from "framer-motion"
@@ -54,42 +54,54 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="relative group">
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+            <motion.span
+              className="text-2xl font-bold gradient-text flex items-center font-orbitron"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Code className="mr-2 h-5 w-5" />
               Shuja Ali
-            </span>
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+            </motion.span>
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="relative px-4 py-2 text-foreground/80 hover:text-primary transition-colors group"
-              >
-                <span>{link.name}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-              </Link>
+            {navLinks.map((link, index) => (
+              <motion.div key={link.name} whileHover={{ scale: 1.1 }}>
+                <Link
+                  href={link.href}
+                  className="relative px-4 py-2 text-foreground/80 hover:text-primary transition-colors group"
+                  scroll={false}
+                >
+                  <span>{link.name}</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
+                </Link>
+              </motion.div>
             ))}
 
             <div className="ml-2 flex items-center gap-3">
               {mounted && (
-                <button
+                <motion.button
                   onClick={toggleTheme}
-                  className="p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors"
+                  className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors tech-glow"
                   aria-label="Toggle theme"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
                 >
                   {resolvedTheme === "dark" ? (
                     <Sun size={18} className="text-primary" />
                   ) : (
                     <Moon size={18} className="text-primary" />
                   )}
-                </button>
+                </motion.button>
               )}
 
-              <Button asChild className="rounded-full px-6">
-                <a href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+              <Button
+                asChild
+                className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
+              >
+                <a href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <Terminal size={16} />
                   Resume
                 </a>
               </Button>
@@ -99,24 +111,27 @@ const Navbar = () => {
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center gap-3 md:hidden">
             {mounted && (
-              <button
+              <motion.button
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors"
+                className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
                 aria-label="Toggle theme"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
               >
                 {resolvedTheme === "dark" ? (
                   <Sun size={18} className="text-primary" />
                 ) : (
                   <Moon size={18} className="text-primary" />
                 )}
-              </button>
+              </motion.button>
             )}
 
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleMenu}
-              className="rounded-full bg-primary/10 hover:bg-primary/20 transition-colors"
+              className="rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X size={20} className="text-primary" /> : <Menu size={20} className="text-primary" />}
             </Button>
@@ -141,11 +156,17 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
+                  whileHover={{
+                    scale: 1.05,
+                    x: 10,
+                    transition: { duration: 0.2 },
+                  }}
                 >
                   <Link
                     href={link.href}
                     className="block py-3 px-4 my-1 text-foreground/80 hover:text-primary transition-colors rounded-lg hover:bg-primary/5"
                     onClick={() => setIsMenuOpen(false)}
+                    scroll={false}
                   >
                     {link.name}
                   </Link>
@@ -156,8 +177,17 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2, delay: navLinks.length * 0.05 }}
               >
-                <Button asChild className="w-full mt-4 rounded-lg">
-                  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <Button
+                  asChild
+                  className="w-full mt-4 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
+                >
+                  <a
+                    href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <Terminal size={16} />
                     Resume
                   </a>
                 </Button>

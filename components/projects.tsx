@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, Filter } from "lucide-react"
+import { ExternalLink, Github, Filter, Sparkles, Zap } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 // Project data from the provided JSON
@@ -485,16 +485,48 @@ const Projects = () => {
   const hasMoreProjects = visibleProjects < filteredProjects.length
 
   return (
-    <section id="projects" ref={ref} className="py-20">
-      <div className="container mx-auto px-4">
+    <section id="projects" ref={ref} className="py-20 relative overflow-hidden funky-lines">
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-secondary/5 z-0"></div>
+
+      <motion.div
+        className="absolute top-40 right-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl opacity-30"
+        animate={{
+          scale: [1, 1.2, 1],
+          rotate: [0, 45, 0],
+        }}
+        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY }}
+      />
+
+      <motion.div
+        className="absolute bottom-20 left-10 w-60 h-60 bg-accent/10 rounded-full blur-3xl opacity-30"
+        animate={{
+          scale: [1, 1.3, 1],
+          rotate: [0, -30, 0],
+        }}
+        transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY }}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
+            <span className="relative inline-block">
+              Featured Projects
+              <motion.span
+                className="absolute -top-6 -right-6"
+                animate={{ rotate: [0, 20, 0, -20, 0] }}
+                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+              >
+                <Sparkles className="h-6 w-6 text-accent" />
+              </motion.span>
+            </span>
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-6"></div>
           <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
             A selection of my recent work showcasing my skills and expertise.
           </p>
@@ -503,17 +535,20 @@ const Projects = () => {
         <div className="flex justify-center mb-8">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 rounded-full px-6 border-primary/30 hover:border-primary"
+              >
                 <Filter size={16} />
                 Filter by Category: {selectedCategory}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="rounded-xl border-primary/20">
               {categories.map((category) => (
                 <DropdownMenuItem
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={selectedCategory === category ? "bg-primary/10" : ""}
+                  className={selectedCategory === category ? "bg-primary/10 rounded-lg" : ""}
                 >
                   {category}
                 </DropdownMenuItem>
@@ -529,31 +564,47 @@ const Projects = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{
+                scale: 1.03,
+                rotate: Math.random() > 0.5 ? 2 : -2,
+                transition: { duration: 0.2 },
+              }}
             >
-              <Card className="h-full flex flex-col hover:shadow-md transition-shadow overflow-hidden">
-                <div className="h-48 overflow-hidden">
+              <Card className="h-full flex flex-col hover:shadow-md transition-shadow overflow-hidden rounded-[1.5rem_0.5rem] border-primary/20">
+                <div className="h-48 overflow-hidden relative">
                   <img
                     src={project.image || "/placeholder.svg?height=300&width=500"}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent opacity-60 mix-blend-overlay" />
                 </div>
                 <CardContent className="flex-grow p-6">
                   <div className="mb-2">
-                    <Badge variant="secondary">{project.category}</Badge>
+                    <Badge
+                      variant="secondary"
+                      className="rounded-full px-3 py-1 bg-secondary/20 text-secondary-foreground"
+                    >
+                      {project.category}
+                    </Badge>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 gradient-text">{project.title}</h3>
                   <p className="text-foreground/80 mb-4 line-clamp-3">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techStack.map((tech, techIndex) => (
-                      <Badge key={techIndex} variant="outline" className="bg-primary/10">
+                      <Badge key={techIndex} variant="outline" className="bg-primary/10 rounded-full">
                         {tech}
                       </Badge>
                     ))}
                   </div>
                 </CardContent>
                 <CardFooter className="p-6 pt-0 flex justify-between">
-                  <Button asChild variant="default" size="sm">
+                  <Button
+                    asChild
+                    variant="default"
+                    size="sm"
+                    className="rounded-full bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
+                  >
                     <a
                       href={project.link}
                       target="_blank"
@@ -565,7 +616,7 @@ const Projects = () => {
                     </a>
                   </Button>
                   {project.github && (
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild variant="outline" size="sm" className="rounded-full">
                       <a
                         href={project.github}
                         target="_blank"
@@ -589,8 +640,9 @@ const Projects = () => {
               onClick={loadMoreProjects}
               variant="outline"
               size="lg"
-              className="px-8 py-6 h-auto rounded-xl text-base font-medium hover:bg-primary/10"
+              className="px-8 py-6 h-auto rounded-full text-base font-medium hover:bg-primary/10 border-primary/30 hover:border-primary"
             >
+              <Zap className="mr-2 h-5 w-5 text-primary" />
               Load More Projects
             </Button>
           </div>

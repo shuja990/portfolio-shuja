@@ -19,6 +19,11 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-poppins)"],
+        orbitron: ["var(--font-orbitron)"],
+        code: ["var(--font-fira-code)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
