@@ -121,7 +121,7 @@ const Navbar = () => {
                 asChild
                 className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
               >
-                <a href="https://drive.google.com/file/d/1VScetaMxfoICEm6nld9FBG7Yz0hDGre5/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <a href="https://drive.google.com/file/d/1xI--MB2_6UNgY52KRKhZz6poHjDTVTwF/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Terminal size={16} />
                   Resume
                 </a>
@@ -202,7 +202,7 @@ const Navbar = () => {
                   className="w-full mt-4 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
                   <a
-                    href="https://drive.google.com/file/d/1VScetaMxfoICEm6nld9FBG7Yz0hDGre5/view?usp=sharing"
+                    href="https://drive.google.com/file/d/1xI--MB2_6UNgY52KRKhZz6poHjDTVTwF/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2"
