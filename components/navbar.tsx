@@ -62,6 +62,7 @@ const Navbar = () => {
     { name: "Skills", href: "skills" },
     { name: "Experience", href: "experience" },
     { name: "Projects", href: "projects" },
+    { name: "Terminal", href: "terminal" },
     { name: "Contact", href: "contact" },
   ]
 
@@ -121,7 +122,7 @@ const Navbar = () => {
                 asChild
                 className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
               >
-                <a href="https://drive.google.com/file/d/1xI--MB2_6UNgY52KRKhZz6poHjDTVTwF/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <a href="/Shuja%20Ali%20-%20Tech%20Lead%20-%20Full%20Stack%20Developer.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Terminal size={16} />
                   Resume
                 </a>
@@ -202,7 +203,7 @@ const Navbar = () => {
                   className="w-full mt-4 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
                   <a
-                    href="https://drive.google.com/file/d/1xI--MB2_6UNgY52KRKhZz6poHjDTVTwF/view?usp=sharing"
+                    href="/Shuja%20Ali%20-%20Tech%20Lead%20-%20Full%20Stack%20Developer.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2"

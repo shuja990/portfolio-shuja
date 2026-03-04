@@ -1,69 +1,34 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Github, Code, Star, GitCommit } from "lucide-react";
+import { Github, Code, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 interface GitHubStats {
   publicRepos: number;
   followers: number;
-  following: number;
   stars: number;
-  avatarUrl: string;
-  bio: string;
-  name: string;
   isLoading: boolean;
   error: string | null;
-}
-
-interface ContributionDay {
-  date: string;
-  count: number;
-  level: number; // 0-4 for intensity
 }
 
 const initialStats: GitHubStats = {
   publicRepos: 0,
   followers: 0,
-  following: 0,
   stars: 0,
-  avatarUrl: "",
-  bio: "",
-  name: "",
   isLoading: true,
   error: null,
 };
 
 const GitHubActivity = () => {
   const [stats, setStats] = useState<GitHubStats>(initialStats);
-  const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  // Generate mock contribution data
-  const generateMockContributions = useCallback(() => {
-    const mockContributions: ContributionDay[] = [];
-    const today = new Date();
-
-    for (let i = 30; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-
-      mockContributions.push({
-        date: date.toISOString().split("T")[0],
-        count: Math.floor(Math.random() * 10),
-        level: Math.floor(Math.random() * 5),
-      });
-    }
-
-    return mockContributions;
-  }, []);
 
   useEffect(() => {
     const fetchGitHubStats = async () => {
@@ -90,18 +55,10 @@ const GitHubActivity = () => {
             )
           : (await starredResponse.json()).length;
 
-        // Generate mock contribution data
-        const mockContributions = generateMockContributions();
-        setContributions(mockContributions);
-
         setStats({
           publicRepos: userData.public_repos,
           followers: userData.followers,
-          following: userData.following,
           stars: starredCount,
-          avatarUrl: userData.avatar_url,
-          bio: userData.bio || "Full Stack Developer",
-          name: userData.name || userData.login,
           isLoading: false,
           error: null,
         });
@@ -118,7 +75,7 @@ const GitHubActivity = () => {
     if (inView) {
       fetchGitHubStats();
     }
-  }, [inView, generateMockContributions]);
+  }, [inView]);
 
   const statItems = [
     {
@@ -130,11 +87,6 @@ const GitHubActivity = () => {
       label: "Followers",
       value: stats.followers,
       icon: <Github className="h-5 w-5" aria-hidden="true" />,
-    },
-    {
-      label: "Following",
-      value: stats.following,
-      icon: <GitCommit className="h-5 w-5" aria-hidden="true" />,
     },
     {
       label: "Stars",
@@ -179,7 +131,7 @@ const GitHubActivity = () => {
         </motion.div>
 
         {/* GitHub Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {statItems.map((item, index) => (
             <motion.div
               key={index}
@@ -196,8 +148,12 @@ const GitHubActivity = () => {
                   <h3 className="text-lg font-medium mb-2">{item.label}</h3>
                   {stats.isLoading ? (
                     <div className="w-16 h-8 bg-primary/10 rounded-md animate-pulse"></div>
+                  ) : stats.error ? (
+                    <p className="text-xl font-medium text-muted-foreground whitespace-nowrap">
+                      N/A
+                    </p>
                   ) : (
-                    <p className="text-3xl font-orbitron font-bold text-primary">
+                    <p className="text-3xl font-bold text-primary">
                       {item.value.toLocaleString()}
                     </p>
                   )}
@@ -207,7 +163,16 @@ const GitHubActivity = () => {
           ))}
         </div>
 
-        {/* Contribution Graph */}
+        {/* Error Fallback */}
+        {stats.error && (
+          <div className="text-center mb-8 relative z-10">
+            <p className="text-muted-foreground bg-primary/5 inline-block py-2 px-4 rounded-lg border border-primary/10">
+              API limits reached. Check out my code directly on GitHub!
+            </p>
+          </div>
+        )}
+
+        {/* GitHub Contribution Graph (real data via ghchart) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -219,54 +184,30 @@ const GitHubActivity = () => {
                 Contribution Activity
               </h3>
 
-              {stats.isLoading ? (
-                <div className="h-24 bg-primary/10 rounded-md animate-pulse"></div>
-              ) : (
-                <div className="flex flex-wrap gap-1">
-                  {contributions.map((day, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.01 }}
-                      className="relative group"
-                    >
-                      <div
-                        className={`w-4 h-4 rounded-sm ${
-                          day.level === 0
-                            ? "bg-primary/10"
-                            : day.level === 1
-                            ? "bg-primary/30"
-                            : day.level === 2
-                            ? "bg-primary/50"
-                            : day.level === 3
-                            ? "bg-primary/70"
-                            : "bg-primary"
-                        }`}
-                        aria-label={`${day.count} contributions on ${day.date}`}
-                        role="img"
-                      ></div>
-                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-background/90 dark:bg-background/90 text-xs px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                        {day.count} contributions on {day.date}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
+              <div className="w-full overflow-x-auto">
+                {/* ghchart.rshah.org renders a real GitHub contribution graph as an SVG */}
+                <img
+                  src="https://ghchart.rshah.org/0066ff/shuja990"
+                  alt="Shuja Ali's GitHub contribution graph"
+                  className="w-full min-w-[680px]"
+                />
+              </div>
 
-              <div className="flex justify-between mt-4 text-xs text-foreground/60">
-                <span>Less</span>
-                <div
-                  className="flex gap-1"
-                  aria-label="Contribution intensity scale"
+              <div className="flex justify-center mt-8">
+                <Button
+                  asChild
+                  className="rounded-full px-8 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
-                  <div className="w-3 h-3 rounded-sm bg-primary/10"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/30"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/50"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/70"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary"></div>
-                </div>
-                <span>More</span>
+                  <a
+                    href="https://github.com/shuja990"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <Github className="h-4 w-4" />
+                    View Full Profile on GitHub
+                  </a>
+                </Button>
               </div>
             </CardContent>
           </Card>

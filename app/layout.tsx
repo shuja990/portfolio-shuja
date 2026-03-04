@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "Shuja Ali Portfolio",
     images: [
       {
-        url: "https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM",
+        url: "https://shujaali.dev/portfolio/profile.jpg",
         width: 800,
         height: 800,
         alt: "Shuja Ali - Full Stack Developer",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
       "Portfolio of Shuja Ali, a Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web solutions.",
     creator: "@shujaali",
     images: [
-      "https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM",
+      "https://shujaali.dev/portfolio/profile.jpg",
     ],
   },
   robots: {

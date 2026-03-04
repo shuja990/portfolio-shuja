@@ -3,73 +3,48 @@
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent } from "@/components/ui/card"
-import { Code, Database, Globe, Server, Layout, Cloud, Sparkles, Zap, Lightbulb } from "lucide-react"
+import { Database, Server, Layout, Cloud, Sparkles, Zap, Lightbulb, Cpu, CreditCard, Wrench, Bot } from "lucide-react"
 
 const skillCategories = [
   {
-    title: "Languages",
-    icon: <Code className="h-7 w-7 text-primary" />,
-    skills: ["JavaScript (ES6+)", "TypeScript", "HTML", "CSS"],
-  },
-  {
     title: "Frontend",
     icon: <Layout className="h-7 w-7 text-primary" />,
-    skills: [
-      "React",
-      "Redux",
-      "Next.js",
-      "TailwindCSS",
-      "Material UI",
-      "Bootstrap",
-      "SCSS",
-      "Shadcn",
-      "AntDesign",
-      "Charts.js",
-    ],
+    skills: ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "Redux", "Zustand", "TailwindCSS", "Material-UI", "Shadcn/ui"],
   },
   {
     title: "Backend",
     icon: <Server className="h-7 w-7 text-primary" />,
-    skills: ["Node.js", "Express", "NestJS", "GraphQL", "Socket.io"],
+    skills: ["Node.js", "Express.js", "NestJS", "GraphQL (Apollo)", "Socket.io", "RESTful APIs"],
   },
   {
-    title: "Databases",
+    title: "Databases & Caching",
     icon: <Database className="h-7 w-7 text-primary" />,
-    skills: ["PostgreSQL", "MongoDB", "Firebase Firestore", "Redis"],
+    skills: ["MongoDB", "PostgreSQL", "Redis", "Mongoose", "Prisma"],
   },
   {
-    title: "APIs & Tools",
-    icon: <Globe className="h-7 w-7 text-primary" />,
-    skills: [
-      "OpenAI",
-      "Stripe",
-      "Chargebee",
-      "Authorize.Net",
-      "Shopify",
-      "PayPal",
-      "Google Maps",
-      "AWS S3",
-      "Cloudinary",
-      "Dwolla",
-      "Plaid",
-    ],
+    title: "AI & Automation",
+    icon: <Cpu className="h-7 w-7 text-primary" />,
+    skills: ["OpenAI API (GPT-4/5)", "Anthropic API", "Gemini API", "LangChain", "RAG Pipelines", "Vector Databases", "Playwright", "Puppeteer"],
   },
   {
-    title: "DevOps & Tools",
+    title: "Payments & Fintech",
+    icon: <CreditCard className="h-7 w-7 text-primary" />,
+    skills: ["Stripe (webhooks, subs)", "PayPal", "Plaid API", "Dwolla", "ACH Transfers"],
+  },
+  {
+    title: "Cloud & DevOps",
     icon: <Cloud className="h-7 w-7 text-primary" />,
-    skills: [
-      "Git",
-      "AWS",
-      "Firebase",
-      "Docker",
-      "Netlify",
-      "Vercel",
-      "CI/CD",
-      "Agile Methodologies",
-      "JIRA",
-      "Clickup",
-      "Postman",
-    ],
+    skills: ["AWS (EC2, S3, RDS)", "Docker", "GitHub Actions", "PM2", "CI/CD Pipelines", "Vercel"],
+  },
+  {
+    title: "Testing & Tooling",
+    icon: <Wrench className="h-7 w-7 text-primary" />,
+    skills: ["Jest", "Playwright", "Postman", "Swagger / OpenAPI", "Git"],
+  },
+  {
+    title: "AI-Assisted Dev",
+    icon: <Bot className="h-7 w-7 text-primary" />,
+    skills: ["GitHub Copilot", "Cursor"],
   },
 ]
 
@@ -140,7 +115,7 @@ const Skills = () => {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
         >
           {skillCategories.map((category, index) => (
             <motion.div
@@ -148,7 +123,7 @@ const Skills = () => {
               variants={itemVariants}
               whileHover={{
                 scale: 1.03,
-                rotate: Math.random() > 0.5 ? 1 : -1,
+                rotate: index % 2 === 0 ? 1 : -1,
                 transition: { duration: 0.2 },
               }}
             >
@@ -176,10 +151,10 @@ const Skills = () => {
                         transition={{ duration: 0.4, delay: 0.1 + skillIndex * 0.05 }}
                         whileHover={{
                           scale: 1.1,
-                          rotate: Math.random() > 0.5 ? 3 : -3,
+                          rotate: skillIndex % 2 === 0 ? 3 : -3,
                         }}
                       >
-                        <div className="bg-primary/10 hover:bg-primary/20 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-md">
+                        <div className="bg-primary/10 dark:bg-primary/20 hover:bg-primary/20 dark:hover:bg-primary/30 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-md">
                           {skill}
                         </div>
                       </motion.div>

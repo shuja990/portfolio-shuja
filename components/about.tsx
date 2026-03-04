@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Code, Terminal } from "lucide-react"
+import Image from "next/image"
 
 const About = () => {
   const [ref, inView] = useInView({
@@ -62,20 +63,40 @@ const About = () => {
             whileHover={{ scale: 1.02 }}
             className="glass p-6 rounded-lg"
           >
-            <h3 className="text-2xl font-orbitron font-semibold mb-4 gradient-text flex items-center">
+            <h3 className="text-2xl font-semibold mb-4 gradient-text flex items-center">
               <Terminal className="mr-2 h-5 w-5" />
               Who I Am
             </h3>
             <p className="text-foreground/80 mb-6">
-              Innovative Full Stack Developer with extensive experience in MERN stack and Next.js. I have a proven track
-              record in designing and implementing robust backend solutions, developing interactive and scalable web
-              applications, and leading development teams.
+              I started coding in 2018 during my CS degree at COMSATS, and by the time I graduated I was already
+              freelancing for real clients. That hands-on start shaped how I work: I treat every project as a real
+              product, not just a collection of features to ship.
             </p>
-            <p className="text-foreground/80 mb-6">
-              I'm adept at integrating APIs, managing data, and leveraging cutting-edge technologies including AI and
-              machine learning to drive business solutions. My experience includes successful project deliveries and
-              freelance work, combining technical proficiency with a keen understanding of client needs.
+            <p className="text-foreground/80 mb-8">
+              Over 6 years I've gone from solo developer to managing engineering teams, working across fintech, AI,
+              e-commerce, and SaaS domains. I specialise in the MERN stack and Next.js, but what I'm really good at is
+              turning vague requirements into working, maintainable software — and getting teams to ship it on time.
             </p>
+
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="glass p-4 rounded-lg text-center bg-primary/5 border border-primary/10">
+                <h4 className="text-3xl font-bold text-primary mb-1">5+</h4>
+                <p className="text-xs text-foreground/70 uppercase tracking-wider">Years Experience</p>
+              </div>
+              <div className="glass p-4 rounded-lg text-center bg-secondary/5 border border-secondary/10">
+                <h4 className="text-3xl font-bold text-secondary mb-1">20+</h4>
+                <p className="text-xs text-foreground/70 uppercase tracking-wider">Projects Delivered</p>
+              </div>
+              <div className="glass p-4 rounded-lg text-center bg-accent/5 border border-accent/10">
+                <h4 className="text-3xl font-bold text-accent mb-1">20+</h4>
+                <p className="text-xs text-foreground/70 uppercase tracking-wider">Clients Served</p>
+              </div>
+              <div className="glass p-4 rounded-lg text-center bg-primary/5 border border-primary/10">
+                <h4 className="text-3xl font-bold text-primary mb-1">30+</h4>
+                <p className="text-xs text-foreground/70 uppercase tracking-wider">Engineers Mentored</p>
+              </div>
+            </div>
+
             <div className="flex flex-wrap gap-2 mb-6">
               <motion.div whileHover={{ scale: 1.1 }}>
                 <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 rounded-lg px-3 py-1">
@@ -110,7 +131,7 @@ const About = () => {
             whileHover={{ scale: 1.02 }}
             className="glass p-6 rounded-lg"
           >
-            <h3 className="text-2xl font-orbitron font-semibold mb-4 gradient-text flex items-center">
+            <h3 className="text-2xl font-semibold mb-4 gradient-text flex items-center">
               <Code className="mr-2 h-5 w-5" />
               Education & Certifications
             </h3>
@@ -120,15 +141,17 @@ const About = () => {
                 <CardContent className="pt-6 bg-gradient-to-br from-background to-primary/5">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 relative">
-                      <img
-                        src="https://media.licdn.com/dms/image/v2/C510BAQEaocAMS5PVuw/company-logo_400_400/company-logo_400_400/0/1631438106544/comsats_university_logo?e=1748476800&v=beta&t=rAwm94uKaCWUYxLa4v7ZtyFY7m4TVceA_m-qMywq9m0"
+                      <Image
+                        src="/portfolio/comsats-logo.png"
                         alt="COMSATS University"
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="48px"
                       />
                       <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold gradient-text font-orbitron">
+                      <h4 className="font-semibold gradient-text">
                         Bachelor's in Computer Software Engineering
                       </h4>
                       <p className="text-sm text-foreground/70">COMSATS University Islamabad</p>
@@ -139,7 +162,7 @@ const About = () => {
               </Card>
             </motion.div>
 
-            <h4 className="font-semibold mb-3 gradient-text font-orbitron">Certifications</h4>
+            <h4 className="font-semibold mb-3 gradient-text">Certifications</h4>
             <ul className="space-y-2">
               <motion.li className="flex items-center gap-2" whileHover={{ x: 5, scale: 1.02 }}>
                 <Badge variant="secondary" className="rounded-lg bg-secondary/20 text-secondary-foreground">

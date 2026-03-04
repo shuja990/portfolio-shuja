@@ -11,7 +11,7 @@ interface TechItem {
   name: string
   category: string
   proficiency: number // 0-100
-  icon: JSX.Element
+  icon: React.ReactNode
   color: string
 }
 

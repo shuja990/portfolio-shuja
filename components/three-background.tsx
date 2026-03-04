@@ -84,17 +84,23 @@ const ThreeBackground = () => {
         const posArray = new Float32Array(particlesCount * 3)
         const colorsArray = new Float32Array(particlesCount * 3)
 
+        let isLoadingInternal = true
+
+        // Colors variables based on theme
+        const isDark = resolvedTheme === "dark" || !resolvedTheme
+        const primaryColor = isDark ? 0.2 : 0.6 // Adjust for light/dark
+
         for (let i = 0; i < particlesCount * 3; i++) {
           // Position
           posArray[i] = (Math.random() - 0.5) * 10
 
-          // Colors - blue/teal theme
+          // Colors - theme aware
           if (i % 3 === 0) {
-            colorsArray[i] = Math.random() * 0.2 + 0.1 // R - low
+            colorsArray[i] = isDark ? Math.random() * 0.2 + 0.1 : Math.random() * 0.3; // R
           } else if (i % 3 === 1) {
-            colorsArray[i] = Math.random() * 0.5 + 0.3 // G - medium
+            colorsArray[i] = Math.random() * 0.5 + primaryColor; // G
           } else {
-            colorsArray[i] = Math.random() * 0.5 + 0.5 // B - high
+            colorsArray[i] = Math.random() * 0.5 + primaryColor; // B
           }
         }
 

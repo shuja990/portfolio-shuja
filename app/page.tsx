@@ -1,12 +1,12 @@
 import Hero from "@/components/hero"
 import About from "@/components/about"
 import Skills from "@/components/skills"
+import InteractiveTerminal from "@/components/interactive-terminal"
 import Experience from "@/components/experience"
 import Projects from "@/components/projects"
 import GitHubActivity from "@/components/github-activity"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
-import ContactWidget from "@/components/contact-widget"
 import Script from "next/script"
 
 export default function Home() {
@@ -19,9 +19,9 @@ export default function Home() {
         <Experience />
         <Projects />
         <GitHubActivity />
+        <InteractiveTerminal />
         <Contact />
         <Footer />
-        <ContactWidget />
       </main>
 
       {/* Structured data for SEO */}

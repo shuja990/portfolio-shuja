@@ -4,44 +4,63 @@ import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Briefcase, Calendar, Sparkles, Zap } from "lucide-react"
+import { Briefcase, Calendar, Sparkles, Zap, CheckCircle2 } from "lucide-react"
+import Image from "next/image"
 
 const experiences = [
   {
     title: "Assistant Software Development Manager",
     company: "Ropstam Solutions Inc.",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFxM9EIyHT4FQ/company-logo_400_400/company-logo_400_400/0/1652215827771/ropstam_logo?e=1748476800&v=beta&t=FfC7w_Yu4cAAwB9PvKPYUbs3rMGALUE_hY5a1wMvMek",
-    period: "Dec 24 - Present",
-    description:
-      "Leading development teams and overseeing project implementations. Designing and implementing robust backend solutions and scalable web applications.",
-    skills: ["Team Leadership", "Project Management", "Full Stack Development", "MERN Stack", "Next.js"],
+    logo: "/portfolio/ropstam-logo.png",
+    period: "Nov 2024 – Present",
+    achievements: [
+      "Define data models, API contracts, and service boundaries across 8+ concurrent projects spanning MERN, mobile, and WordPress stacks.",
+      "Introduced Redis caching on high-read endpoints, cutting average response times by ~40% on frequently hit routes.",
+      "Mentor 30+ engineers via code reviews and pair programming; authored internal standards covering API design, Git workflows, and security practices.",
+      "Handle production incidents end-to-end — root cause analysis, fix deployment, and follow-up safeguards to prevent recurrence.",
+      "Build critical features personally (payment flows, OpenAI integrations, complex workflows) where senior-level depth is required.",
+    ],
+    skills: ["Team Leadership", "System Architecture", "MERN Stack", "Redis", "OpenAI", "Next.js"],
   },
   {
-    title: "Team Lead MERN",
+    title: "Team Lead – MERN Stack",
     company: "Ropstam Solutions Inc.",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFxM9EIyHT4FQ/company-logo_400_400/company-logo_400_400/0/1652215827771/ropstam_logo?e=1748476800&v=beta&t=FfC7w_Yu4cAAwB9PvKPYUbs3rMGALUE_hY5a1wMvMek",
-    period: "Jun 23 - Dec 24",
-    description:
-      "Led a team of developers working on MERN stack projects. Ensured code quality, mentored junior developers, and coordinated with clients.",
-    skills: ["Team Leadership", "MERN Stack", "Code Reviews", "Client Communication"],
+    logo: "/portfolio/ropstam-logo.png",
+    period: "Jul 2023 – Nov 2024",
+    achievements: [
+      "Led a team of 15 engineers with ~60% direct coding contribution, alongside sprint planning and PR reviews.",
+      "Built RAG pipelines using LangChain and FAISS/Pinecone for document Q&A; added prompt-level caching to reduce OpenAI API costs by ~30%.",
+      "Implemented Socket.io real-time features (chat, notifications, collaborative editing) with Redis pub/sub for multi-instance deployments.",
+      "Provisioned AWS infrastructure (EC2, S3, RDS) with load balancing and auto-scaling; migrated two projects off shared hosting.",
+      "Set up BitBucket CI/CD pipelines covering linting, testing, and automated deploys to staging and production.",
+    ],
+    skills: ["Team Leadership", "LangChain", "RAG", "AWS", "Socket.io", "CI/CD", "TypeScript"],
   },
   {
     title: "MERN Stack Developer",
     company: "Ropstam Solutions Inc.",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFxM9EIyHT4FQ/company-logo_400_400/company-logo_400_400/0/1652215827771/ropstam_logo?e=1748476800&v=beta&t=FfC7w_Yu4cAAwB9PvKPYUbs3rMGALUE_hY5a1wMvMek",
-    period: "Jul 22 - Jun 23",
-    description:
-      "Developed and maintained web applications using the MERN stack. Implemented responsive designs and integrated third-party APIs.",
-    skills: ["React", "Node.js", "MongoDB", "Express", "API Integration"],
+    logo: "/portfolio/ropstam-logo.png",
+    period: "Jul 2022 – Jun 2023",
+    achievements: [
+      "Built production applications end-to-end: API design in Express, MongoDB schema design, and React frontend architecture.",
+      "Integrated Stripe and PayPal with webhook handling for subscription lifecycle events and idempotency key enforcement.",
+      "Optimized MongoDB aggregation queries with compound indexes; reduced execution time from ~4s to under 300ms on key reporting endpoints.",
+      "Implemented JWT auth with refresh token rotation and OAuth2; structured token invalidation to reduce session hijacking exposure.",
+      "Diagnosed and resolved Node.js memory leaks by profiling heap usage and identifying event listener accumulation.",
+    ],
+    skills: ["React", "Node.js", "MongoDB", "Express", "Stripe", "JWT Auth"],
   },
   {
-    title: "Freelance Web Developer",
-    company: "Freelance",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFHz9agyy675A/company-logo_400_400/company-logo_400_400/0/1635337455615/fiverr_com_logo?e=1748476800&v=beta&t=HbDAfCf9HP581MNcm_Mlaww1Biuth3vm8iOUtt0zPUc",
-    period: "Apr 20 - Present",
-    description:
-      "Delivered custom web solutions for clients worldwide. Specialized in e-commerce websites, dashboards, and interactive web applications.",
-    skills: ["Web Development", "Client Management", "E-commerce", "Custom Solutions"],
+    title: "Freelance Full Stack Developer",
+    company: "Fiverr / Upwork",
+    logo: "/portfolio/freelance-logo.svg",
+    period: "Apr 2020 – Present",
+    achievements: [
+      "Delivered custom web applications for international clients across fintech, SaaS, and e-commerce — zero project cancellations.",
+      "Built AI-powered tools including document editors with inline GPT suggestions and real-time collaboration via WebSockets.",
+      "Managed full deployment lifecycle independently on AWS and DigitalOcean.",
+    ],
+    skills: ["Full Stack", "AWS", "DigitalOcean", "AI Tools", "WebSockets"],
   },
 ]
 
@@ -132,13 +151,15 @@ const Experience = () => {
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-4 mb-6">
                     <motion.div
-                      className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-white p-2 shadow-md"
+                      className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-white p-2 shadow-md relative"
                       whileHover={{ rotate: 10 }}
                     >
-                      <img
+                      <Image
                         src={exp.logo || "/placeholder.svg"}
                         alt={exp.company}
-                        className="w-full h-full object-contain"
+                        fill
+                        className="object-contain p-1"
+                        sizes="56px"
                       />
                     </motion.div>
                     <div>
@@ -154,14 +175,21 @@ const Experience = () => {
                     <span className="font-medium">{exp.period}</span>
                   </div>
 
-                  <p className="mb-6 text-foreground/80 leading-relaxed">{exp.description}</p>
+                  <ul className="mb-6 space-y-2">
+                    {exp.achievements.map((achievement, i) => (
+                      <li key={i} className="flex items-start gap-2 text-foreground/80 leading-relaxed text-sm">
+                        <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
 
                   <div className="flex flex-wrap gap-2">
                     {exp.skills.map((skill, skillIndex) => (
                       <motion.div key={skillIndex} whileHover={{ scale: 1.1, rotate: skillIndex % 2 === 0 ? 3 : -3 }}>
                         <Badge
                           variant="outline"
-                          className="bg-primary/10 hover:bg-primary/20 transition-colors border-primary/20 px-3 py-1 text-sm rounded-full"
+                          className="bg-primary/10 dark:bg-primary/20 hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors border-primary/20 px-3 py-1 text-sm rounded-full"
                         >
                           {skill}
                         </Badge>
@@ -209,13 +237,15 @@ const Experience = () => {
                   <CardContent className="p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
                       <motion.div
-                        className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-white p-2 shadow-md"
+                        className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-white p-2 shadow-md relative"
                         whileHover={{ rotate: 10 }}
                       >
-                        <img
+                        <Image
                           src={exp.logo || "/placeholder.svg"}
                           alt={exp.company}
-                          className="w-full h-full object-contain"
+                          fill
+                          className="object-contain p-1"
+                          sizes="56px"
                         />
                       </motion.div>
                       <div>
@@ -231,14 +261,21 @@ const Experience = () => {
                       <span className="font-medium">{exp.period}</span>
                     </div>
 
-                    <p className="mb-6 text-foreground/80 leading-relaxed">{exp.description}</p>
+                    <ul className="mb-6 space-y-2">
+                      {exp.achievements.map((achievement, i) => (
+                        <li key={i} className="flex items-start gap-2 text-foreground/80 leading-relaxed text-sm">
+                          <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                          <span>{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
 
                     <div className="flex flex-wrap gap-2">
                       {exp.skills.map((skill, skillIndex) => (
                         <motion.div key={skillIndex} whileHover={{ scale: 1.1, rotate: skillIndex % 2 === 0 ? 3 : -3 }}>
                           <Badge
                             variant="outline"
-                            className="bg-primary/10 hover:bg-primary/20 transition-colors border-primary/20 px-3 py-1 text-sm rounded-full"
+                            className="bg-primary/10 dark:bg-primary/20 hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors border-primary/20 px-3 py-1 text-sm rounded-full"
                           >
                             {skill}
                           </Badge>

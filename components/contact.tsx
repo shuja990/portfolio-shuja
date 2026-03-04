@@ -57,13 +57,19 @@ const Contact = () => {
     setFormStatus("idle");
 
     try {
-      // Initialize EmailJS with your public key
-      emailjs.init("user_DLaK4TDVt4KzTGl1oxNQk"); // Replace with your actual public key
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
 
-      // Send the email using EmailJS
+      if (!publicKey || !serviceId || !templateId) {
+        throw new Error("EmailJS environment variables are not configured.")
+      }
+
+      emailjs.init(publicKey)
+
       await emailjs.send(
-        "gmail", // Replace with your EmailJS service ID
-        "template_c3rbjy2", // Replace with your EmailJS template ID
+        serviceId,
+        templateId,
         {
           to_email: "shujaali1234@gmail.com",
           from_name: formData.name,
@@ -71,7 +77,7 @@ const Contact = () => {
           subject: formData.subject,
           message: formData.message,
         }
-      );
+      )
 
       // Handle success
       setFormStatus("success");
@@ -318,11 +324,7 @@ const Contact = () => {
                     )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <motion.div
-                        className="space-y-2"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
+                      <div className="space-y-2">
                         <label htmlFor="name" className="text-sm font-medium">
                           Your Name
                         </label>
@@ -335,13 +337,9 @@ const Contact = () => {
                           required
                           className="bg-background/50 border-primary/20 focus:border-primary h-12 rounded-xl"
                         />
-                      </motion.div>
+                      </div>
 
-                      <motion.div
-                        className="space-y-2"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
+                      <div className="space-y-2">
                         <label htmlFor="email" className="text-sm font-medium">
                           Your Email
                         </label>
@@ -355,14 +353,10 @@ const Contact = () => {
                           required
                           className="bg-background/50 border-primary/20 focus:border-primary h-12 rounded-xl"
                         />
-                      </motion.div>
+                      </div>
                     </div>
 
-                    <motion.div
-                      className="space-y-2"
-                      whileHover={{ scale: 1.01 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <div className="space-y-2">
                       <label htmlFor="subject" className="text-sm font-medium">
                         Subject
                       </label>
@@ -375,13 +369,9 @@ const Contact = () => {
                         required
                         className="bg-background/50 border-primary/20 focus:border-primary h-12 rounded-xl"
                       />
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                      className="space-y-2"
-                      whileHover={{ scale: 1.01 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <div className="space-y-2">
                       <label htmlFor="message" className="text-sm font-medium">
                         Message
                       </label>
@@ -395,7 +385,7 @@ const Contact = () => {
                         required
                         className="bg-background/50 border-primary/20 focus:border-primary rounded-xl resize-none"
                       />
-                    </motion.div>
+                    </div>
 
                     <motion.div
                       whileHover={{ scale: 1.05 }}

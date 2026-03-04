@@ -28,9 +28,16 @@ const Footer = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
             </Link>
             <p className="text-foreground/70 mt-2 max-w-md">
-              Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web
+              Full Stack Developer specialising in MERN stack and Next.js, creating innovative and scalable web
               solutions.
             </p>
+            <div className="mt-3 inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400 text-xs font-medium px-3 py-1.5 rounded-full">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+              </span>
+              Available for new projects
+            </div>
           </div>
 
           <div className="flex flex-col items-center md:items-end">
@@ -41,8 +48,9 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-full"
                 whileHover={{ scale: 1.2, rotate: 10 }}
+                aria-label="GitHub Profile"
               >
-                <Github size={20} />
+                <Github size={20} aria-hidden="true" />
               </motion.a>
               <motion.a
                 href="https://linkedin.com/in/shujaali7"
@@ -50,15 +58,17 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-full"
                 whileHover={{ scale: 1.2, rotate: -10 }}
+                aria-label="LinkedIn Profile"
               >
-                <Linkedin size={20} />
+                <Linkedin size={20} aria-hidden="true" />
               </motion.a>
               <motion.a
                 href="mailto:shujaali1234@gmail.com"
                 className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-full"
                 whileHover={{ scale: 1.2, rotate: 10 }}
+                aria-label="Email Me"
               >
-                <Mail size={20} />
+                <Mail size={20} aria-hidden="true" />
               </motion.a>
             </div>
 
