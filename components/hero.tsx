@@ -268,7 +268,7 @@ const Hero = () => {
                     </div>
                   )}
                   <Image
-                    src="/images/profile-photo.png"
+                    src="/images/profile-photo.jpg"
                     alt="Shuja Ali - Full Stack Developer"
                     fill
                     className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
