@@ -36,7 +36,8 @@
     --primary: 210 90% 60%;
     --primary-foreground: 210 10% 10%;
     --secondary: 230 80% 60%;
-    --secondary-foreground: 230 10% 10%;
+    /* light text: secondary surfaces in dark mode are dark (solid indigo or /20 tints over dark cards) */
+    --secondary-foreground: 230 25% 94%;
     --muted: 210 20% 20%;
     --muted-foreground: 210 10% 70%;
     --accent: 190 80% 50%;
@@ -409,6 +410,33 @@ a:focus-visible {
 .animated-underline:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+
+/* Tech galaxy node labels — positioned per-frame from projected 3D coords */
+.galaxy-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-fira-code), monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--node-color, #0d80f2) 60%, white);
+  background: hsl(var(--background) / 0.75);
+  border: 1px solid color-mix(in srgb, var(--node-color, #0d80f2) 55%, transparent);
+  border-radius: 9999px;
+  padding: 2px 9px;
+  cursor: pointer;
+  will-change: transform, opacity;
+  backdrop-filter: blur(4px);
+  text-shadow: 0 1px 4px hsl(var(--background));
+}
+
+.galaxy-label:hover,
+.galaxy-label:focus-visible {
+  background: hsl(var(--background) / 0.9);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--node-color, #0d80f2) 60%, transparent);
 }
 
 /* Improved color contrast for text */

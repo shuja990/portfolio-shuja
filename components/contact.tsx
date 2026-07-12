@@ -5,6 +5,7 @@ import type React from "react";
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useBlobParallax } from "@/lib/use-blob-parallax";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,14 +24,17 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
+import { site } from "@/data";
 
 const Contact = () => {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
-  const [ref, inView] = useInView({
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [inViewRef, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  useBlobParallax(sectionRef);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -56,21 +60,33 @@ const Contact = () => {
     setIsSubmitting(true);
     setFormStatus("idle");
 
-    try {
-      // Initialize EmailJS with your public key
-      emailjs.init("user_DLaK4TDVt4KzTGl1oxNQk"); // Replace with your actual public key
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-      // Send the email using EmailJS
+    if (!serviceId || !templateId || !publicKey) {
+      setIsSubmitting(false);
+      setFormStatus("error");
+      toast({
+        title: "Contact form not configured",
+        description: `Please email me directly at ${site.email}.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
       await emailjs.send(
-        "gmail", // Replace with your EmailJS service ID
-        "template_c3rbjy2", // Replace with your EmailJS template ID
+        serviceId,
+        templateId,
         {
-          to_email: "shujaali1234@gmail.com",
+          to_email: site.email,
           from_name: formData.name,
           from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-        }
+        },
+        { publicKey }
       );
 
       // Handle success
@@ -105,30 +121,18 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      ref={ref}
+      ref={(el) => {
+        sectionRef.current = el;
+        inViewRef(el);
+      }}
       className="py-20 relative overflow-hidden funky-dots"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-background to-primary/5 opacity-50 z-0"></div>
 
       {/* Decorative elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl opacity-30"
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 45, 0],
-        }}
-        transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY }}
-      />
-
-      <motion.div
-        className="absolute bottom-20 right-10 w-80 h-80 bg-secondary/20 rounded-full blur-3xl opacity-30"
-        animate={{
-          scale: [1, 1.3, 1],
-          rotate: [0, -30, 0],
-        }}
-        transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY }}
-      />
+      <div data-parallax="120" className="absolute top-20 left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl opacity-30" />
+      <div data-parallax="-90" className="absolute bottom-20 right-10 w-80 h-80 bg-secondary/20 rounded-full blur-3xl opacity-30" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -184,10 +188,10 @@ const Contact = () => {
                     <div>
                       <h4 className="font-medium text-lg mb-1">Email</h4>
                       <a
-                        href="mailto:shujaali1234@gmail.com"
+                        href={`mailto:${site.email}`}
                         className="text-foreground/70 hover:text-primary transition-colors"
                       >
-                        shujaali1234@gmail.com
+                        {site.email}
                       </a>
                     </div>
                   </motion.div>
@@ -202,10 +206,10 @@ const Contact = () => {
                     <div>
                       <h4 className="font-medium text-lg mb-1">Phone</h4>
                       <a
-                        href="tel:+923025133646"
+                        href={`tel:${site.phone.replace(/\s/g, "")}`}
                         className="text-foreground/70 hover:text-primary transition-colors"
                       >
-                        +92 302 5133646
+                        {site.phone}
                       </a>
                     </div>
                   </motion.div>
@@ -219,7 +223,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h4 className="font-medium text-lg mb-1">Location</h4>
-                      <p className="text-foreground/70">Islamabad, Pakistan</p>
+                      <p className="text-foreground/70">{site.location}</p>
                     </div>
                   </motion.div>
                 </div>
@@ -228,7 +232,7 @@ const Contact = () => {
                   <h4 className="font-medium text-lg mb-5">Connect with me</h4>
                   <div className="flex gap-4">
                     <motion.a
-                      href="https://linkedin.com/in/shujaali7"
+                      href={site.socials.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-primary/10 p-4 rounded-xl hover:bg-primary/20 transition-all duration-300"
@@ -237,7 +241,7 @@ const Contact = () => {
                       <Linkedin className="h-5 w-5 text-primary" />
                     </motion.a>
                     <motion.a
-                      href="https://github.com/shuja990"
+                      href={site.socials.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-primary/10 p-4 rounded-xl hover:bg-primary/20 transition-all duration-300"
@@ -246,7 +250,7 @@ const Contact = () => {
                       <Github className="h-5 w-5 text-primary" />
                     </motion.a>
                     <motion.a
-                      href="https://twitter.com/shujaali"
+                      href={site.socials.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-primary/10 p-4 rounded-xl hover:bg-primary/20 transition-all duration-300"

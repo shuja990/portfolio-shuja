@@ -1,83 +1,31 @@
 "use client"
 
+import { useRef } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
+import { useBlobParallax } from "@/lib/use-blob-parallax"
 import { Card, CardContent } from "@/components/ui/card"
 import { Code, Database, Globe, Server, Layout, Cloud, Sparkles, Zap, Lightbulb } from "lucide-react"
+import { skillCategories } from "@/data"
+import type { SkillCategory } from "@/data"
 
-const skillCategories = [
-  {
-    title: "Languages",
-    icon: <Code className="h-7 w-7 text-primary" />,
-    skills: ["JavaScript (ES6+)", "TypeScript", "HTML", "CSS"],
-  },
-  {
-    title: "Frontend",
-    icon: <Layout className="h-7 w-7 text-primary" />,
-    skills: [
-      "React",
-      "Redux",
-      "Next.js",
-      "TailwindCSS",
-      "Material UI",
-      "Bootstrap",
-      "SCSS",
-      "Shadcn",
-      "AntDesign",
-      "Charts.js",
-    ],
-  },
-  {
-    title: "Backend",
-    icon: <Server className="h-7 w-7 text-primary" />,
-    skills: ["Node.js", "Express", "NestJS", "GraphQL", "Socket.io"],
-  },
-  {
-    title: "Databases",
-    icon: <Database className="h-7 w-7 text-primary" />,
-    skills: ["PostgreSQL", "MongoDB", "Firebase Firestore", "Redis"],
-  },
-  {
-    title: "APIs & Tools",
-    icon: <Globe className="h-7 w-7 text-primary" />,
-    skills: [
-      "OpenAI",
-      "Stripe",
-      "Chargebee",
-      "Authorize.Net",
-      "Shopify",
-      "PayPal",
-      "Google Maps",
-      "AWS S3",
-      "Cloudinary",
-      "Dwolla",
-      "Plaid",
-    ],
-  },
-  {
-    title: "DevOps & Tools",
-    icon: <Cloud className="h-7 w-7 text-primary" />,
-    skills: [
-      "Git",
-      "AWS",
-      "Firebase",
-      "Docker",
-      "Netlify",
-      "Vercel",
-      "CI/CD",
-      "Agile Methodologies",
-      "JIRA",
-      "Clickup",
-      "Postman",
-    ],
-  },
-]
+const categoryIcons: Record<SkillCategory["icon"], React.ReactNode> = {
+  code: <Code className="h-7 w-7 text-primary" />,
+  layout: <Layout className="h-7 w-7 text-primary" />,
+  server: <Server className="h-7 w-7 text-primary" />,
+  database: <Database className="h-7 w-7 text-primary" />,
+  sparkles: <Sparkles className="h-7 w-7 text-primary" />,
+  globe: <Globe className="h-7 w-7 text-primary" />,
+  cloud: <Cloud className="h-7 w-7 text-primary" />,
+}
 
 const Skills = () => {
-  const [ref, inView] = useInView({
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const [inViewRef, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+  useBlobParallax(sectionRef)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -99,27 +47,19 @@ const Skills = () => {
   }
 
   return (
-    <section id="skills" ref={ref} className="py-20 relative overflow-hidden funky-waves">
+    <section
+      id="skills"
+      ref={(el) => {
+        sectionRef.current = el
+        inViewRef(el)
+      }}
+      className="py-20 relative overflow-hidden funky-waves"
+    >
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-background to-primary/5 opacity-70 z-0"></div>
 
-      <motion.div
-        className="absolute top-20 right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-30"
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, 30, 0],
-        }}
-        transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY }}
-      />
-
-      <motion.div
-        className="absolute bottom-40 left-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl opacity-30"
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, -20, 0],
-        }}
-        transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY }}
-      />
+      <div data-parallax="130" className="absolute top-20 right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-30" />
+      <div data-parallax="-100" className="absolute bottom-40 left-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl opacity-30" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -148,7 +88,7 @@ const Skills = () => {
               variants={itemVariants}
               whileHover={{
                 scale: 1.03,
-                rotate: Math.random() > 0.5 ? 1 : -1,
+                rotate: index % 2 === 0 ? 1 : -1,
                 transition: { duration: 0.2 },
               }}
             >
@@ -160,7 +100,7 @@ const Skills = () => {
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.5 }}
                     >
-                      {category.icon}
+                      {categoryIcons[category.icon]}
                     </motion.div>
                     <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
                       {category.title}
@@ -176,7 +116,7 @@ const Skills = () => {
                         transition={{ duration: 0.4, delay: 0.1 + skillIndex * 0.05 }}
                         whileHover={{
                           scale: 1.1,
-                          rotate: Math.random() > 0.5 ? 3 : -3,
+                          rotate: skillIndex % 2 === 0 ? 3 : -3,
                         }}
                       >
                         <div className="bg-primary/10 hover:bg-primary/20 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-md">

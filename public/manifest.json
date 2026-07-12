@@ -63,14 +63,14 @@
         "short_name": "Projects",
         "description": "View my portfolio projects",
         "url": "/#projects",
-        "icons": [{ "src": "/projects-icon.svg", "sizes": "192x192" }]
+        "icons": [{ "src": "/icons/projects-icon.svg", "sizes": "192x192" }]
       },
       {
         "name": "Contact",
         "short_name": "Contact",
         "description": "Get in touch with me",
         "url": "/#contact",
-        "icons": [{ "src": "/contact-icon.svg", "sizes": "192x192" }]
+        "icons": [{ "src": "/icons/contact-icon.svg", "sizes": "192x192" }]
       }
     ]
   }

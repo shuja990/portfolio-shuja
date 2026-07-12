@@ -2,9 +2,10 @@ import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
 import { ThemeProvider } from "@/components/theme-provider"
+import { MotionProvider } from "@/components/providers/motion-provider"
 import Navbar from "@/components/navbar"
 import { Toaster } from "@/components/ui/toaster"
-import Script from "next/script"
+import { site } from "@/data"
 
 // Import custom fonts
 import { Orbitron, Poppins, Fira_Code } from "next/font/google"
@@ -31,48 +32,33 @@ const firaCode = Fira_Code({
 
 // Enhanced metadata for better SEO
 export const metadata: Metadata = {
-  title: "Shuja Ali - Full Stack Developer | MERN & Next.js Expert",
-  description:
-    "Portfolio of Shuja Ali, a Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web solutions.",
-  keywords: [
-    "Full Stack Developer",
-    "MERN Stack",
-    "Next.js",
-    "React",
-    "Node.js",
-    "JavaScript",
-    "TypeScript",
-    "Web Development",
-    "Shuja Ali",
-  ],
-  authors: [{ name: "Shuja Ali", url: "https://github.com/shuja990" }],
-  creator: "Shuja Ali",
+  title: site.seo.title,
+  description: site.seo.description,
+  keywords: [...site.seo.keywords],
+  authors: [{ name: site.name, url: site.socials.github }],
+  creator: site.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://shujaali.dev",
-    title: "Shuja Ali - Full Stack Developer | MERN & Next.js Expert",
-    description:
-      "Portfolio of Shuja Ali, a Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web solutions.",
-    siteName: "Shuja Ali Portfolio",
+    url: site.siteUrl,
+    title: site.seo.title,
+    description: site.seo.description,
+    siteName: `${site.name} Portfolio`,
     images: [
       {
-        url: "https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM",
-        width: 800,
-        height: 800,
-        alt: "Shuja Ali - Full Stack Developer",
+        url: site.seo.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${site.name} - ${site.role}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shuja Ali - Full Stack Developer | MERN & Next.js Expert",
-    description:
-      "Portfolio of Shuja Ali, a Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web solutions.",
+    title: site.seo.title,
+    description: site.seo.description,
     creator: "@shujaali",
-    images: [
-      "https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM",
-    ],
+    images: [site.seo.ogImage],
   },
   robots: {
     index: true,
@@ -85,9 +71,9 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://shujaali.dev",
+    canonical: site.siteUrl,
   },
-  metadataBase: new URL("https://shujaali.dev"),
+  metadataBase: new URL(site.siteUrl),
 }
 
 export default function RootLayout({
@@ -108,38 +94,44 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={poppins.className}>
+      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject body attributes */}
+      <body className={poppins.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Navbar />
-          {children}
-          <Toaster />
+          <MotionProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+          </MotionProvider>
         </ThemeProvider>
 
         {/* Structured data for SEO */}
-        <Script
+        <script
           id="schema-person"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Shuja Ali",
-              url: "https://shujaali.dev",
-              jobTitle: "Full Stack Developer",
+              name: site.name,
+              url: site.siteUrl,
+              jobTitle: site.role,
               worksFor: {
                 "@type": "Organization",
                 name: "Ropstam Solutions Inc.",
               },
-              sameAs: [
-                "https://github.com/shuja990",
-                "https://linkedin.com/in/shuja-ali",
-                "https://twitter.com/shujaali",
+              sameAs: [site.socials.github, site.socials.linkedin, site.socials.twitter],
+              description: site.seo.description,
+              knowsAbout: [
+                "MERN Stack",
+                "Next.js",
+                "React",
+                "Node.js",
+                "TypeScript",
+                "AI Integrations",
+                "LangChain",
+                "AWS",
               ],
-              description:
-                "Full Stack Developer specializing in MERN stack and Next.js, creating innovative and scalable web solutions.",
-              knowsAbout: ["MERN Stack", "Next.js", "React", "Node.js", "JavaScript", "TypeScript", "Web Development"],
             }),
           }}
         />

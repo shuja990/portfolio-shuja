@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactElement } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,7 +11,7 @@ interface TechItem {
   name: string
   category: string
   proficiency: number // 0-100
-  icon: JSX.Element
+  icon: ReactElement
   color: string
 }
 
@@ -190,7 +190,7 @@ const TechStackVisualization = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView && !isLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              whileHover={{ scale: 1.05, rotate: Math.random() > 0.5 ? 1 : -1 }}
+              whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 1 : -1 }}
             >
               <Card className="h-full border-none overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
                 <CardContent className="p-6 flex flex-col h-full bg-gradient-to-br from-background to-primary/5">

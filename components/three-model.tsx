@@ -9,7 +9,8 @@ const ThreeModel = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!mountRef.current) return
+    const mount = mountRef.current
+    if (!mount) return
 
     const initThree = async () => {
       try {
@@ -19,12 +20,7 @@ const ThreeModel = () => {
         const scene = new THREE.Scene()
 
         // Camera setup
-        const camera = new THREE.PerspectiveCamera(
-          75,
-          mountRef.current.clientWidth / mountRef.current.clientHeight,
-          0.1,
-          1000,
-        )
+        const camera = new THREE.PerspectiveCamera(75, mount.clientWidth / mount.clientHeight, 0.1, 1000)
         camera.position.set(0, 0, 5)
 
         // Renderer setup
@@ -32,9 +28,9 @@ const ThreeModel = () => {
           alpha: true,
           antialias: true,
         })
-        renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight)
+        renderer.setSize(mount.clientWidth, mount.clientHeight)
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        mountRef.current.appendChild(renderer.domElement)
+        mount.appendChild(renderer.domElement)
 
         // Lights
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
@@ -187,7 +183,7 @@ const ThreeModel = () => {
           const elapsedTime = clock.getElapsedTime()
 
           // Animate tech icons
-          techIcons.children.forEach((icon: THREE.Object3D) => {
+          techIcons.children.forEach((icon) => {
             if (icon.userData) {
               icon.position.y = icon.userData.originalY + Math.sin(elapsedTime * icon.userData.speed * 5) * 0.3
               icon.rotation.x += icon.userData.rotationSpeed

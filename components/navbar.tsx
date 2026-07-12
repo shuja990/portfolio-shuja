@@ -8,6 +8,7 @@ import { Menu, X, Moon, Sun, Code, Terminal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 import { motion, AnimatePresence } from "framer-motion"
+import { site } from "@/data"
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -61,6 +62,7 @@ const Navbar = () => {
     { name: "About", href: "about" },
     { name: "Skills", href: "skills" },
     { name: "Experience", href: "experience" },
+    { name: "Galaxy", href: "galaxy" },
     { name: "Projects", href: "projects" },
     { name: "Contact", href: "contact" },
   ]
@@ -121,7 +123,7 @@ const Navbar = () => {
                 asChild
                 className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
               >
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <a href={site.resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Terminal size={16} />
                   Resume
                 </a>
@@ -202,7 +204,7 @@ const Navbar = () => {
                   className="w-full mt-4 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
                   <a
-                    href="https://drive.google.com/file/d/1_Jf2BfCz9A8QxJXL6NpMF4QQbPhGBorC/view?usp=sharing"
+                    href={site.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2"

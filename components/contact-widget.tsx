@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, type ReactElement } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { MessageSquare, X, Mail, Phone, MessageCircle } from "lucide-react"
 
 interface ContactOption {
   name: string
-  icon: JSX.Element
+  icon: ReactElement
   action: () => void
   color: string
   ariaLabel: string

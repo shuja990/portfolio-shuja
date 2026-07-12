@@ -2,12 +2,14 @@
 
 import type React from "react"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ArrowDown, Github, Linkedin, Mail, Code, Terminal } from "lucide-react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
+import { site } from "@/data"
+import { gsap, SplitText, useGSAP } from "@/lib/gsap"
 
 // Dynamically import Three.js components with SSR disabled
 const ThreeBackground = dynamic(() => import("./three-background"), {
@@ -47,21 +49,61 @@ const ScrollProgressIndicator = () => {
 
 const Hero = () => {
   const [typedText, setTypedText] = useState("")
-  const fullText = "Full Stack Developer"
+  const fullText = site.role
   const typingSpeed = 100
   const [threeJsSupported, setThreeJsSupported] = useState(true)
   const [threeJsError, setThreeJsError] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Entrance timeline (GSAP owns the hero's entrance; framer-motion keeps hover micro-interactions)
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
+        tl.from(".hero-card", { y: 40, autoAlpha: 0, duration: 0.7 })
+          .from(".hero-avatar", { scale: 0.85, autoAlpha: 0, duration: 0.6 }, "-=0.4")
+          .from(".hero-cta", { y: 20, autoAlpha: 0, stagger: 0.12, duration: 0.45 }, "-=0.3")
+          .from(".hero-social", { y: 12, autoAlpha: 0, stagger: 0.08, duration: 0.35 }, "-=0.25")
+          .from(".hero-scroll", { autoAlpha: 0, y: -10, duration: 0.4 }, "-=0.1")
+
+        // Split the headline into chars once the display font has loaded,
+        // otherwise SplitText measures fallback-font glyph widths
+        gsap.set(".hero-heading", { autoAlpha: 0 })
+        document.fonts.ready.then(() => {
+          gsap.set(".hero-heading", { autoAlpha: 1 })
+          const split = SplitText.create(".hero-heading", { type: "chars" })
+          gsap.from(split.chars, {
+            autoAlpha: 0,
+            y: 24,
+            rotateX: -60,
+            stagger: 0.03,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          })
+        })
+      })
+
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set([".hero-card", ".hero-avatar", ".hero-cta", ".hero-social", ".hero-scroll", ".hero-heading"], {
+          clearProps: "all",
+        })
+      })
+    },
+    { scope: containerRef },
+  )
 
   useEffect(() => {
-    // Check if browser supports WebGL
+    // Check if browser supports WebGL (probe context is released right away)
     try {
       const canvas = document.createElement("canvas")
-      const isWebGLSupported = !!(
-        window.WebGLRenderingContext &&
-        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-      )
-      setThreeJsSupported(isWebGLSupported)
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+      if (gl && "getExtension" in gl) {
+        ;(gl as WebGLRenderingContext).getExtension("WEBGL_lose_context")?.loseContext()
+      }
+      setThreeJsSupported(!!gl)
     } catch (e) {
       setThreeJsSupported(false)
     }
@@ -110,7 +152,11 @@ const Hero = () => {
   return (
     <>
       <ScrollProgressIndicator />
-      <section id="home" className="relative min-h-screen flex items-center justify-center pt-16 pb-12 overflow-hidden">
+      <section
+        id="home"
+        ref={containerRef}
+        className="relative min-h-screen flex items-center justify-center pt-16 pb-12 overflow-hidden"
+      >
         {/* 3D Background */}
         {showThreeJs && <ThreeBackground />}
 
@@ -119,12 +165,7 @@ const Hero = () => {
         <div className="container mx-auto px-4 z-10">
           {/* Profile Image for Mobile - Centered at top */}
           <div className="md:hidden flex justify-center mb-8">
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="relative hero-avatar">
               <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-primary/30 shadow-lg shadow-primary/20">
                 {!imageLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
@@ -132,7 +173,7 @@ const Hero = () => {
                   </div>
                 )}
                 <Image
-                  src="https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM"
+                  src="/images/profile.png"
                   alt="Shuja Ali - Full Stack Developer"
                   fill
                   className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
@@ -144,34 +185,25 @@ const Hero = () => {
               </div>
               {/* Decorative ring */}
               <div className="absolute -inset-2 rounded-full border-2 border-dashed border-primary/30 animate-spin-slow"></div>
-            </motion.div>
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-            <motion.div
-              className="flex-1 glass p-6 md:p-8 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-orbitron font-bold mb-3 md:mb-4 animate-text-shimmer">
-                Hi, I'm <span className="text-primary">Shuja Ali</span>
+            <div className="flex-1 glass p-6 md:p-8 rounded-lg hero-card">
+              <h1 className="hero-heading text-3xl sm:text-4xl md:text-6xl font-orbitron font-bold mb-3 md:mb-4 animate-text-shimmer">
+                Hi, I'm <span className="text-primary">{site.name}</span>
               </h1>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-6 h-8 font-orbitron">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 md:mb-6 min-h-8 font-orbitron">
                 {typedText}
                 <span className="animate-pulse">|</span>
               </h2>
-              <p className="text-base md:text-lg text-foreground/80 mb-6 md:mb-8 max-w-2xl">
-                Innovative Full Stack Developer with extensive experience in MERN stack and Next.js. Proven track record
-                in designing and implementing robust backend solutions, developing interactive and scalable web
-                applications, and leading development teams.
-              </p>
+              <p className="text-base md:text-lg text-foreground/80 mb-6 md:mb-8 max-w-2xl">{site.summary}</p>
 
               <div className="flex flex-wrap gap-3 md:gap-4">
                 <Button
                   asChild
                   size="default"
-                  className="btn-funky bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
+                  className="hero-cta btn-funky bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
                 >
                   <a
                     href="#contact"
@@ -182,7 +214,7 @@ const Hero = () => {
                     Get In Touch
                   </a>
                 </Button>
-                <Button asChild variant="outline" size="default" className="btn-funky">
+                <Button asChild variant="outline" size="default" className="hero-cta btn-funky">
                   <a
                     href="#projects"
                     onClick={(e) => handleScrollToSection(e, "projects")}
@@ -196,43 +228,38 @@ const Hero = () => {
 
               <div className="flex items-center gap-4 mt-6 md:mt-8">
                 <motion.a
-                  href="https://github.com/shuja990"
+                  href={site.socials.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
+                  className="hero-social text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
                   whileHover={{ scale: 1.1 }}
                   aria-label="GitHub Profile"
                 >
                   <Github size={20} aria-hidden="true" />
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com/in/shujaali7"
+                  href={site.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
+                  className="hero-social text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
                   whileHover={{ scale: 1.1 }}
                   aria-label="LinkedIn Profile"
                 >
                   <Linkedin size={20} aria-hidden="true" />
                 </motion.a>
                 <motion.a
-                  href="mailto:shujaali1234@gmail.com"
-                  className="text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
+                  href={`mailto:${site.email}`}
+                  className="hero-social text-foreground/70 hover:text-primary transition-colors p-2 bg-primary/10 rounded-lg tech-glow"
                   whileHover={{ scale: 1.1 }}
                   aria-label="Email Contact"
                 >
                   <Mail size={20} aria-hidden="true" />
                 </motion.a>
               </div>
-            </motion.div>
+            </div>
 
             {/* Desktop Image - Only visible on md and up */}
-            <motion.div
-              className="hidden md:flex flex-shrink-0 justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
+            <div className="hidden md:flex flex-shrink-0 justify-center hero-avatar">
               <div className="relative">
                 <div className="relative w-72 h-72 overflow-hidden border-4 border-primary/20 img-tech tech-glow">
                   {!imageLoaded && (
@@ -241,7 +268,7 @@ const Hero = () => {
                     </div>
                   )}
                   <Image
-                    src="https://media.licdn.com/dms/image/v2/D4D03AQGU1MwmuiwxPg/profile-displayphoto-shrink_800_800/B4DZO8nQnAGUAk-/0/1734036230399?e=1748476800&v=beta&t=XtxFX1n18lqBuMkaQIs2r9Ogm2LSpsZRxD8rHs4CLdM"
+                    src="/images/profile-photo.png"
                     alt="Shuja Ali - Full Stack Developer"
                     fill
                     className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
@@ -255,15 +282,10 @@ const Hero = () => {
                 <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary/20 rounded-full blur-sm"></div>
                 <div className="absolute -bottom-4 -left-4 w-10 h-10 bg-accent/20 rounded-full blur-sm"></div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hero-scroll">
             <a
               href="#about"
               onClick={(e) => handleScrollToSection(e, "about")}
@@ -275,7 +297,7 @@ const Hero = () => {
                 <ArrowDown className="text-primary" size={20} aria-hidden="true" />
               </motion.div>
             </a>
-          </motion.div>
+          </div>
         </div>
       </section>
     </>

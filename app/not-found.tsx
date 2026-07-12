@@ -44,11 +44,9 @@ export default function NotFound() {
             </Link>
           </Button>
 
-          <Button asChild variant="outline">
-            <a href="javascript:history.back()" className="flex items-center gap-2">
-              <ArrowLeft size={16} />
-              Go Back
-            </a>
+          <Button variant="outline" onClick={() => window.history.back()} className="flex items-center gap-2">
+            <ArrowLeft size={16} />
+            Go Back
           </Button>
         </div>
       </motion.div>

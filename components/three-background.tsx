@@ -171,6 +171,47 @@ const ThreeBackground = () => {
         animate()
         setIsLoading(false)
 
+        // Pause the loop whenever it can't be seen: hero off-screen, tab
+        // hidden, or the tech galaxy's own WebGL scene is on screen (two
+        // live contexts is the main mobile perf/battery risk).
+        let galaxyVisible = false
+        let heroVisible = true
+
+        const pauseLoop = () => {
+          if (animationRef.current !== null) {
+            cancelAnimationFrame(animationRef.current)
+            animationRef.current = null
+          }
+        }
+        const syncLoop = () => {
+          const shouldRun = heroVisible && !galaxyVisible && !document.hidden
+          if (shouldRun && animationRef.current === null) {
+            animate()
+          } else if (!shouldRun) {
+            pauseLoop()
+          }
+        }
+
+        const handleGalaxyVisible = (event: Event) => {
+          galaxyVisible = Boolean((event as CustomEvent).detail)
+          syncLoop()
+        }
+        const handleDocVisibility = () => syncLoop()
+        window.addEventListener("tech-galaxy-visible", handleGalaxyVisible)
+        document.addEventListener("visibilitychange", handleDocVisibility)
+
+        let heroObserver: IntersectionObserver | undefined
+        if (mountRef.current) {
+          heroObserver = new IntersectionObserver(
+            ([entry]) => {
+              heroVisible = entry.isIntersecting
+              syncLoop()
+            },
+            { threshold: 0 },
+          )
+          heroObserver.observe(mountRef.current)
+        }
+
         // Handle resize
         const handleResize = () => {
           if (cameraRef.current && rendererRef.current) {
@@ -207,6 +248,9 @@ const ThreeBackground = () => {
         cleanup = () => {
           window.removeEventListener("resize", handleResize)
           window.removeEventListener("mousemove", handleMouseMove)
+          window.removeEventListener("tech-galaxy-visible", handleGalaxyVisible)
+          document.removeEventListener("visibilitychange", handleDocVisibility)
+          heroObserver?.disconnect()
           if (animationRef.current !== null) {
             cancelAnimationFrame(animationRef.current)
             animationRef.current = null
@@ -260,11 +304,7 @@ const ThreeBackground = () => {
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
-      {error && (
-        <div className="absolute inset-0 flex items-center justify-center text-red-500 bg-background/50 z-10">
-          {error}
-        </div>
-      )}
+      {/* the background is purely decorative — fail silently, never show an error overlay */}
     </>
   )
 }
