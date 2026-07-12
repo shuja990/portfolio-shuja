@@ -194,7 +194,7 @@ const GitHubActivity = () => {
         </motion.div>
 
         {/* GitHub Stats */}
-        <div ref={statsGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div ref={statsGridRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
           {statItems.map((item, index) => (
             <motion.div
               key={index}

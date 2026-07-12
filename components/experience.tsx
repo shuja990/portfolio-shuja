@@ -108,8 +108,8 @@ const Experience = () => {
           </p>
         </div>
 
-        {/* Mobile Timeline */}
-        <div className="md:hidden relative pl-12">
+        {/* Mobile / tablet timeline (single column) */}
+        <div className="lg:hidden relative pl-12">
           {/* Vertical timeline line */}
           <div className="exp-line absolute left-2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent"></div>
 
@@ -122,8 +122,9 @@ const Experience = () => {
                 transition: { duration: 0.2 },
               }}
             >
-              {/* Timeline dot */}
-              <div className="absolute left-2 top-10 transform -translate-x-1/2 z-20">
+              {/* Timeline dot — card sits 48px in (pl-12), line center is at 10px,
+                  so pull the dot 38px left of the card to land on the line */}
+              <div className="absolute -left-[38px] top-10 transform -translate-x-1/2 z-20">
                 <motion.div
                   className="exp-dot w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-accent shadow-lg shadow-primary/20 flex items-center justify-center"
                   whileHover={{ scale: 1.2, rotate: 360 }}
@@ -183,8 +184,8 @@ const Experience = () => {
           ))}
         </div>
 
-        {/* Desktop Timeline */}
-        <div className="hidden md:block relative">
+        {/* Desktop timeline (alternating two-column, lg+) */}
+        <div className="hidden lg:block relative">
           {/* Timeline line - visible on desktop only */}
           <div className="exp-line absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent"></div>
 

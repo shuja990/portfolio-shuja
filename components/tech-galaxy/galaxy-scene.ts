@@ -29,6 +29,8 @@ const OUTER_RADIUS = 13
 const WINDING = Math.PI * 2.1 // how far each arm wraps around the core
 const DISC_TILT_X = 0.5
 const DISC_TILT_Z = -0.1
+/** camera orbit radius that frames the disc nicely on wide canvases */
+const BASE_CAMERA_DISTANCE = Math.hypot(0, 11, 26)
 
 /**
  * Pure three.js spiral-galaxy scene (no React): tech nodes sit along two
@@ -331,6 +333,12 @@ export class GalaxyScene {
     this.renderer.setSize(width, height, false)
     this.camera.aspect = width / height
     this.camera.updateProjectionMatrix()
+    // On narrow (portrait) canvases the fixed orbit radius crops the disc's
+    // arms — pull the camera back until the full disc fits horizontally.
+    const tanHalfV = Math.tan((this.camera.fov * Math.PI) / 360)
+    const halfWidthNeeded = (OUTER_RADIUS + 2) * 1.12 // disc + dust spread + margin
+    const distanceToFitWidth = halfWidthNeeded / (tanHalfV * this.camera.aspect)
+    this.camera.position.setLength(Math.max(BASE_CAMERA_DISTANCE, distanceToFitWidth))
     this.requestRender()
   }
 

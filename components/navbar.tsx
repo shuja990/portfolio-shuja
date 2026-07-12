@@ -87,8 +87,8 @@ const Navbar = () => {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300"></span>
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          {/* Desktop Navigation (lg+: 7 links + Resume don't fit at md widths) */}
+          <nav className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link, index) => (
               <motion.div key={link.name} whileHover={{ scale: 1.1 }}>
                 <a
@@ -132,7 +132,7 @@ const Navbar = () => {
           </nav>
 
           {/* Mobile Navigation Toggle */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="flex items-center gap-3 lg:hidden">
             {mounted && (
               <motion.button
                 onClick={toggleTheme}
@@ -166,11 +166,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-background/95 dark:bg-background/95 backdrop-blur-md border-t border-border/10"
+            // opacity/slide only: animating height:"auto" makes framer-motion
+            // measure keyframes via window.scrollTo(0,0), which cancels the
+            // smooth scroll triggered by tapping a menu link
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
+            className="lg:hidden bg-background/95 dark:bg-background/95 backdrop-blur-md border-t border-border/10"
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col">
               {navLinks.map((link, index) => (
