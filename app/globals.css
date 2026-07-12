@@ -161,12 +161,12 @@
 }
 
 .animate-text-shimmer {
-  background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%);
-  background-size: 200% auto;
-  color: transparent;
+  /* static gradient: animating background-position on clipped text is
+     unreliable in Chromium and left these headings unpainted/invisible */
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary)));
   -webkit-background-clip: text;
   background-clip: text;
-  animation: text-shimmer 3s linear infinite;
+  color: transparent;
 }
 
 /* Improved mobile styles */

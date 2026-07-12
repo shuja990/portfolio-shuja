@@ -51,9 +51,9 @@ const TechGalaxySection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8"
         >
-          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4 animate-text-shimmer">
+          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4">
             <span className="relative inline-block">
-              Tech Galaxy
+              <span className="animate-text-shimmer">Tech Galaxy</span>
               <motion.span
                 className="absolute -top-6 -right-8"
                 animate={{ rotate: 360 }}

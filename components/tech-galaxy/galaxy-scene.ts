@@ -252,7 +252,10 @@ export class GalaxyScene {
     this.scene.add(this.group)
 
     // ---- HTML labels (buttons for keyboard access) ----
-    this.nodes.forEach((node) => {
+    // On small canvases 20+ pills overlap into noise: label only the biggest
+    // stars (nodes are weight-sorted). Unlabelled stars remain tappable.
+    const labelCount = isMobile ? 10 : this.nodes.length
+    this.nodes.forEach((node, i) => {
       const el = document.createElement("button")
       el.type = "button"
       el.textContent = node.label
@@ -260,6 +263,7 @@ export class GalaxyScene {
       el.className = "galaxy-label"
       el.style.setProperty("--node-color", node.color)
       el.addEventListener("click", () => this.onSelect(node.id))
+      if (i >= labelCount) el.style.display = "none"
       labelLayer.appendChild(el)
       this.labelEls.push(el)
     })

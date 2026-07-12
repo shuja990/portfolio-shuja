@@ -90,9 +90,11 @@ const Experience = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="exp-header text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="relative inline-block">
-              Work Experience
+              {/* clip only the text: an animated child inside a background-clip:text
+                  element stops the text painting in Chromium */}
+              <span className="gradient-text">Work Experience</span>
               <motion.span
                 className="absolute -top-6 -right-6"
                 animate={{ rotate: [0, 20, 0, -20, 0] }}

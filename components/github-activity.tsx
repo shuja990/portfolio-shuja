@@ -178,9 +178,9 @@ const GitHubActivity = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4 animate-text-shimmer">
+          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4">
             <span className="relative inline-block">
-              GitHub Profile
+              <span className="animate-text-shimmer">GitHub Profile</span>
               <Github
                 className="absolute -top-6 -right-6 h-6 w-6 text-accent"
                 aria-hidden="true"

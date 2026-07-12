@@ -41,7 +41,7 @@ export const TECHS: Record<TechId, Tech> = {
   postgresql: tech("postgresql", "PostgreSQL", "database"),
   redis: tech("redis", "Redis", "database"),
   firebase: tech("firebase", "Firebase", "database"),
-  ai: tech("ai", "Artificial Intelligence", "ai", true),
+  ai: tech("ai", "AI", "ai", true),
   openai: tech("openai", "OpenAI", "ai", true),
   anthropic: tech("anthropic", "Claude", "ai", true),
   gemini: tech("gemini", "Gemini", "ai", true),

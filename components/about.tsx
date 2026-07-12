@@ -46,9 +46,11 @@ const About = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4 animate-text-shimmer">
+          <h2 className="text-3xl md:text-4xl font-orbitron font-bold mb-4">
             <span className="relative inline-block">
-              About Me
+              {/* clip only the text: positioned children inside a
+                  background-clip:text element stop the text painting */}
+              <span className="animate-text-shimmer">About Me</span>
               <Code className="absolute -top-6 -right-6 h-6 w-6 text-accent" />
             </span>
           </h2>
