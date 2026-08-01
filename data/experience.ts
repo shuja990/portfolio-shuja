@@ -3,7 +3,7 @@ import type { ExperienceItem } from "./types"
 /** Work history — dates and bullets from the 2026 CV */
 export const experiences: ExperienceItem[] = [
   {
-    title: "Assistant Software Development Manager",
+    title: "Technical Lead",
     company: "Ropstam Solutions Inc.",
     logo: "/images/logos/ropstam.png",
     period: "Nov 2024 - Present",

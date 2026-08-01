@@ -15,10 +15,10 @@ export const site = {
     twitter: "https://twitter.com/shujaali",
   },
   summary:
-    "Full-stack engineer with 5+ years building production-grade web applications across fintech, SaaS, and AI domains. Experienced in architecting MERN and Next.js systems from schema design through deployment, with a strong focus on performance, maintainability, and cost-aware API usage.",
+    "Senior full-stack engineer with 5+ years building production-grade web applications across fintech, SaaS, and AI domains. Deep hands-on experience architecting MERN and Next.js systems from schema design through AWS deployment, with a specialty in LLM integrations — RAG pipelines, vector databases, and cost-aware OpenAI/Anthropic API usage.",
   about: {
-    p1: "Full-stack engineer with 5+ years building production-grade web applications across fintech, SaaS, and AI domains. Experienced in architecting MERN and Next.js systems from schema design through deployment, with a strong focus on performance, maintainability, and cost-aware API usage.",
-    p2: "Currently managing technical delivery for multiple product teams at Ropstam Solutions while staying hands-on with architecture, code reviews, and complex feature development. Comfortable owning decisions around system design, third-party integrations, and infrastructure setup on AWS.",
+    p1: "Senior full-stack engineer with 5+ years building production-grade web applications across fintech, SaaS, and AI domains. Deep hands-on experience architecting MERN and Next.js systems from schema design through AWS deployment, with a specialty in LLM integrations — RAG pipelines, vector databases, and cost-aware OpenAI/Anthropic API usage.",
+    p2: "Currently the senior-most technical contributor across multiple product teams at Ropstam Solutions, owning system design, third-party integrations, and the hardest feature work personally — while staying hands-on with architecture, code reviews, and complex feature development.",
     badges: ["Full Stack Development", "AI & RAG Pipelines", "System Architecture", "Team Leadership"],
   },
   education: {
