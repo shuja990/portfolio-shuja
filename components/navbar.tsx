@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Moon, Sun, Code, Terminal } from "lucide-react"
+import { Menu, X, Moon, Sun, Code, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 import { motion, AnimatePresence } from "framer-motion"
@@ -124,7 +124,7 @@ const Navbar = () => {
                 className="rounded-lg px-6 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary"
               >
                 <a href={site.resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <Terminal size={16} />
+                  <FileText size={16} />
                   Resume
                 </a>
               </Button>
@@ -212,7 +212,7 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2"
                   >
-                    <Terminal size={16} />
+                    <FileText size={16} />
                     Resume
                   </a>
                 </Button>

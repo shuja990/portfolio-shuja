@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer"
 import { useBlobParallax } from "@/lib/use-blob-parallax"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Code, Terminal } from "lucide-react"
+import { Code, User } from "lucide-react"
 import { site, certifications } from "@/data"
 
 const badgeStyles = [
@@ -70,7 +70,7 @@ const About = () => {
             className="glass p-6 rounded-lg"
           >
             <h3 className="text-2xl font-orbitron font-semibold mb-4 gradient-text flex items-center">
-              <Terminal className="mr-2 h-5 w-5" />
+              <User className="mr-2 h-5 w-5" />
               Who I Am
             </h3>
             <p className="text-foreground/80 mb-6">{site.about.p1}</p>

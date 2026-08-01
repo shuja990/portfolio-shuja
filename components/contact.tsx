@@ -23,7 +23,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from "@emailjs/browser";
 import { site } from "@/data";
 
 const Contact = () => {
@@ -60,11 +59,9 @@ const Contact = () => {
     setIsSubmitting(true);
     setFormStatus("idle");
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const formId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
 
-    if (!serviceId || !templateId || !publicKey) {
+    if (!formId) {
       setIsSubmitting(false);
       setFormStatus("error");
       toast({
@@ -76,18 +73,23 @@ const Contact = () => {
     }
 
     try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          to_email: site.email,
-          from_name: formData.name,
-          from_email: formData.email,
+      const response = await fetch(`https://formspree.io/f/${formId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
           subject: formData.subject,
           message: formData.message,
-        },
-        { publicKey }
-      );
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Formspree responded with ${response.status}`);
+      }
 
       // Handle success
       setFormStatus("success");
@@ -105,7 +107,7 @@ const Contact = () => {
       });
     } catch (error) {
       // Handle error
-      console.error("Error sending email:", error);
+      console.error("Error sending message:", error);
       setFormStatus("error");
       toast({
         title: "Message Failed",

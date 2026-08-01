@@ -5,7 +5,7 @@ import type React from "react"
 import { useEffect, useState, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowDown, Github, Linkedin, Mail, Code, Terminal } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Mail, Code } from "lucide-react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { site } from "@/data"
@@ -65,7 +65,17 @@ const Hero = () => {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
         tl.from(".hero-card", { y: 40, autoAlpha: 0, duration: 0.7 })
           .from(".hero-avatar", { scale: 0.85, autoAlpha: 0, duration: 0.6 }, "-=0.4")
-          .from(".hero-cta", { y: 20, autoAlpha: 0, stagger: 0.12, duration: 0.45 }, "-=0.3")
+          // .fromTo (not .from): the CTA buttons are Radix Slot children of
+          // .hero-card, which is set visibility:hidden a moment earlier — a
+          // plain .from() reads that inherited hidden state as its "end" and
+          // animates to a no-op, leaving the buttons invisible. Explicit end
+          // values remove that dependency on the read-back computed state.
+          .fromTo(
+            ".hero-cta",
+            { autoAlpha: 0, y: 20 },
+            { autoAlpha: 1, y: 0, stagger: 0.12, duration: 0.45 },
+            "-=0.3",
+          )
           .from(".hero-social", { y: 12, autoAlpha: 0, stagger: 0.08, duration: 0.35 }, "-=0.25")
           .from(".hero-scroll", { autoAlpha: 0, y: -10, duration: 0.4 }, "-=0.1")
 
@@ -210,7 +220,7 @@ const Hero = () => {
                     onClick={(e) => handleScrollToSection(e, "contact")}
                     className="flex items-center gap-2"
                   >
-                    <Terminal className="h-4 w-4" aria-hidden="true" />
+                    <Mail className="h-4 w-4" aria-hidden="true" />
                     Get In Touch
                   </a>
                 </Button>
